@@ -1,0 +1,66 @@
+server:
+  port: 8500
+  servlet:
+    context-path: /
+
+openai-service:
+  api-key:
+  gpt-model: gpt-3.5-turbo
+  audio-model: whisper-1
+  maxSize: 5
+  http-client:
+    read-timeout: 3000
+    connect-timeout: 3000
+  urls:
+    base-url: https://api.openai.com/v1
+    chat-url: /chat/completions
+    create-transcription-url: /audio/transcriptions
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    com.github.kolomolo.service.openaiclient: TRACE
+
+# Spring
+spring:
+  jpa:
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+  jackson:
+    default-property-inclusion: NON_NULL
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    url: jdbc:h2:mem:jwt_security
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+      database-platform: org.hibernate.dialect.H2Dialect
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: 'ALWAYS'
+  health:
+    circuitbreakers:
+      enabled: true
+
+
